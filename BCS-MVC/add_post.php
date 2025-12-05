@@ -64,7 +64,7 @@ if(isset($_POST['add_post']))// if the user has pressed the Add post button
         //display to user a simple success message
         $_SESSION['placements_success'] = 'Success: Your Pet is successfully added!';
         //reload page to show updated version
-        header('Location: posts.php');
+        header('Location: my_posts.php');
         exit;
     }
 
