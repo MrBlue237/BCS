@@ -1,0 +1,82 @@
+<?php require('template/header.phtml'); ?>
+
+    <div class="container mt-4">
+        <div class="row">
+
+            <div class="col-md-12">
+                <h1 class="mb-3">Student Profile: <?php echo htmlspecialchars($view->user->getName()); ?></h1>
+            </div>
+
+            <?php if ($view->updateSuccess): ?>
+                <div class="alert alert-success">Skills updated successfully!</div>
+            <?php endif; ?>
+            <?php if ($view->updateError): ?>
+                <div class="alert alert-danger">Error updating skills. Please try again.</div>
+            <?php endif; ?>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">Contact Details</div>
+                    <div class="card-body">
+                        <p><strong>Email:</strong> <?php echo htmlspecialchars($view->user->getEmail()); ?></p>
+                        <p><strong>Phone:</strong> <?php echo htmlspecialchars($view->user->getPhoneNumber()); ?></p>
+                        <p><strong>Address:</strong> <?php echo nl2br(htmlspecialchars($view->user->getPostalAddress())); ?></p>
+                        <?php if ($view->user->getCvFilePath()): ?>
+                            <p class="text-success">CV uploaded.</p>
+                        <?php else: ?>
+                            <p class="text-danger">No CV uploaded.</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">SFIA Skill Levels</div>
+                    <div class="card-body">
+                        <p class="text-muted">Select the SFIA skills you possess and rate your expertise from **Level 1 (Follow)** to **Level 7 (Set Strategy)**.</p>
+
+                        <form method="post" action="student_profile.php">
+                            <input type="hidden" name="update_skills" value="1">
+
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                <tr>
+                                    <th>Skill Code</th>
+                                    <th>Skill Name</th>
+                                    <th>Your Level (1-7)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                foreach ($view->allSkills as $skill):
+                                    ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($skill->getSkillCode()); ?></td>
+                                        <td><?php echo htmlspecialchars($skill->getSkillName()); ?></td>
+                                        <td>
+                                            <select name="skill_<?php echo htmlspecialchars($skill->getSkillCode()); ?>" class="form-select form-select-sm">
+                                                <option value="0">--- Not Possessed ---</option>
+                                                <?php for ($i = 1; $i <= 7; $i++): ?>
+                                                    <option value="<?php echo $i; ?>"
+                                                            <?php echo ($skill->getSfiaLevel() == $i) ? 'selected' : ''; ?>>
+                                                        Level <?php echo $i; ?>
+                                                    </option>
+                                                <?php endfor; ?>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+
+                            <button type="submit" class="btn btn-success mt-3">Save My Skills</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<?php require('template/footer.phtml'); ?>
