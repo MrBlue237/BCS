@@ -1,15 +1,9 @@
 <?php
 /**
- * @file pets.php
- * @author Mohammad Bahaauddeen
- * @version 1.0.0
- * @package Controllers
- * @copyright 2025 University of Salford
- * * Controller for managing and displaying pet records.
- * Handles fetching, searching, filtering, adding, deleting, and status changes for pets.
+ * Controller for managing and displaying an employer's placement records.
  */
 
-// Start session if not already started. To have the correct user state (e.g., logged in).
+// Start session if not already started.
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -20,14 +14,20 @@ require_once('Models/PlacementsDataSet.php');
 $view = new stdClass();
 $view->pageTitle = 'My Posts';
 
-//add activate option
+// Access Control: Must be logged in AND must be an employer
+if (!isset($_SESSION['logged_in']) || ($_SESSION['role'] ?? '') !== 'employer') {
+    header('Location: index.php');
+    exit;
+}
 
-// create a new student dataset object that we can generate data from
+$employerId = $_SESSION['user_id'];
+
 $placementsDataSet = new PlacementsDataSet();
-// Fetch all pets for initial display
-$view->placementsDataSet = $placementsDataSet->fetchAllPosts();
 
-// send a results count to the view to show how many results were retrieved
+// Fetch ONLY posts belonging to the logged-in employer
+$view->placementsDataSet = $placementsDataSet->fetchPostsByEmployerID($employerId);
+
+// Send a results count to the view
 if (count($view->placementsDataSet) == 0)
 {
     $view->dbMessage = "No results";
@@ -36,6 +36,10 @@ else
 {
     $view->dbMessage = count($view->placementsDataSet) . " result(s)";
 }
+
+// Check for success message from add_post.php
+$view->success = $_SESSION['placements_success'] ?? null;
+unset($_SESSION['placements_success']);
 
 // include the view
 require_once('Views/my_posts.phtml');

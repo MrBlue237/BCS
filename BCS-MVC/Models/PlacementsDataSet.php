@@ -12,6 +12,25 @@ class PlacementsDataSet {
     }
 
     /**
+     * Fetches all placement records belonging to a specific employer (My Posts).
+     * @param int $employerId The ID of the logged-in employer.
+     * @return array An array of PlacementsData objects.
+     */
+    public function fetchPostsByEmployerID($employerId) {
+        $sqlQuery = 'SELECT * FROM placement_opportunity WHERE employer_id = :employerId;';
+
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        $statement->bindParam(':employerId', $employerId, PDO::PARAM_INT); // Bind the employer ID
+        $statement->execute();
+
+        $dataSet = [];
+        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $dataSet[] = new PlacementsData($row);
+        }
+        return $dataSet;
+    }
+
+    /**
      * Fetches all pet records from the database, ordered by the date reported (newest first).
      *
      * @return array An array of PetsData objects.

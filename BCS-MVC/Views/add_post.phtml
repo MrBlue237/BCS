@@ -1,43 +1,56 @@
 <?php require('template/header.phtml'); ?>
 
-    <!-- Add a Post -->
-    <h2>Create New Post :</h2>
+    <h2>Create New Placement Post:</h2>
 
+<?php if (!empty($view->postErrors)): ?>
+    <div class="alert alert-danger" role="alert">
+        <p>Please fix the following errors:</p>
+        <ul>
+            <?php foreach ($view->postErrors as $error): ?>
+                <li><?php echo htmlspecialchars($error); ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
 
-    <!-- show input boxes with values of original so they can easily just modify existing -->
-    <form action="add_post.php" method="POST" enctype="multipart/form-data">
-
+    <form action="add_post.php" method="POST">
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingTitle" name="title" required>
-            <label for="floatingName">Title</label>
+            <input type="text" class="form-control" id="floatingTitle" name="title" required
+                   value="<?php echo htmlspecialchars($view->formData['title'] ?? ''); ?>">
+            <label for="floatingTitle">Title</label>
         </div>
+
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingSalary" name="salary" required>
-            <label for="floatingSpecies">Salary</label>
+            <input type="number" step="0.01" class="form-control" id="floatingSalary" name="salary" required
+                   value="<?php echo htmlspecialchars($view->formData['salary'] ?? ''); ?>">
+            <label for="floatingSalary">Salary (e.g., 20000.00)</label>
         </div>
+
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingLocation" name="location" required>
-            <label for="floatingBreed">Location</label>
+            <input type="text" class="form-control" id="floatingLocation" name="location" required
+                   value="<?php echo htmlspecialchars($view->formData['location'] ?? ''); ?>">
+            <label for="floatingLocation">Location</label>
         </div>
+
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingStart" name="start" required>
-            <label for="floatingColor">Start Date</label>
+            <input type="date" class="form-control" id="floatingStart" name="start" required
+                   value="<?php echo htmlspecialchars($view->formData['start'] ?? ''); ?>">
+            <label for="floatingStart">Start Date</label>
         </div>
+
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingEnd" name="end" required>
-            <label for="floatingColor">End date</label>
+            <input type="date" class="form-control" id="floatingEnd" name="end" required
+                   value="<?php echo htmlspecialchars($view->formData['end'] ?? ''); ?>">
+            <label for="floatingEnd">End date</label>
         </div>
-<!--        <div class="mb-3">-->
-<!--            <label for="formFile" class="form-label">Add an Image (Optional)</label>-->
-<!--            <p><strong>Photo:<input type="file" name="petphoto" class="form-control" accept=".gif,.jpg,.jpeg,.png"></p>-->
-<!--        </div>-->
+
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingDescription" name="description" placeholder="Description of Pet" required>
+            <textarea class="form-control" id="floatingDescription" name="description" placeholder="Placement description" required><?php echo htmlspecialchars($view->formData['description'] ?? ''); ?></textarea>
             <label for="floatingDescription">Description</label>
         </div>
 
-        <button type="submit" class="btn btn-primary" name="add_post">Save Changes</button>
+        <button type="submit" class="btn btn-primary" name="add_post">Create Post</button>
 
     </form>
 
