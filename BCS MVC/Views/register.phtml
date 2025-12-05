@@ -1,0 +1,87 @@
+<?php require('template/header.phtml') ?>
+
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <h2 class="mt-4 mb-3">Create New Account</h2>
+            <p class="lead">Register as either a Student seeking a placement or an Employer offering one.</p>
+
+            <?php if (!empty($view->errors)): ?>
+                <div class="alert alert-danger" role="alert">
+                    Please correct the following errors:
+                    <ul>
+                        <?php foreach ($view->errors as $error): ?>
+                            <li><?php echo htmlspecialchars($error); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <form method="post" action="register.php" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label class="form-label">Account Type *</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="role" id="roleStudent" value="student"
+                               onchange="this.form.submit();"
+                                <?php echo (isset($view->formData['role']) && $view->formData['role'] === 'student') ? 'checked' : ''; ?> required>
+                        <label class="form-check-label" for="roleStudent">
+                            Student (Seeking Placement)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="role" id="roleEmployer" value="employer"
+                               onchange="this.form.submit();"
+                                <?php echo (isset($view->formData['role']) && $view->formData['role'] === 'employer') ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="roleEmployer">
+                            Employer (Offering Placement)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="name" class="form-label"><?php echo $view->nameLabel; ?></label>
+                    <input type="text" class="form-control" id="name" name="name" required value="<?php echo htmlspecialchars($view->formData['name'] ?? ''); ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="phone_number" class="form-label">Phone Number *</label>
+                    <input type="text" class="form-control" id="phone_number" name="phone_number" required value="<?php echo htmlspecialchars($view->formData['phone_number'] ?? ''); ?>">
+                </div>
+
+                <div class="mb-3">
+                    <label for="postal_address" class="form-label">Postal Address *</label>
+                    <textarea class="form-control" id="postal_address" name="postal_address" rows="3" required><?php echo htmlspecialchars($view->formData['postal_address'] ?? ''); ?></textarea>
+                </div>
+
+                <?php if (isset($view->formData['role']) && $view->formData['role'] === 'student'): ?>
+                    <div class="mb-3" id="cvUploadField">
+                        <label for="cv_file" class="form-label">Upload CV (PDF format, Optional for Student)</label>
+                        <input class="form-control" type="file" id="cv_file" name="cv_file" accept=".pdf">
+                        <?php
+                        if (!empty($view->formData['cv_file_path'])): ?>
+                            <small class="text-success">CV file ready for submission.</small>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address (Used for Login) *</label>
+                    <input type="email" class="form-control" id="email" name="email" required value="<?php echo htmlspecialchars($view->formData['email'] ?? ''); ?>">
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label for="password" class="form-label">Password *</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="password_confirm" class="form-label">Confirm Password *</label>
+                        <input type="password" class="form-control" id="password_confirm" name="password_confirm" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-lg w-100 mt-3">Register Account</button>
+                <p class="text-center mt-3">Already have an account? <a href="login.php">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+
+<?php require('template/footer.phtml') ?>

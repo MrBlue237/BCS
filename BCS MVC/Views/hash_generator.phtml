@@ -1,0 +1,54 @@
+<?php
+require('template/header.phtml');
+?>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="mb-4">⚙️ Manual Password Hash Generator</h2>
+                <p class="lead">Use this tool to generate secure hashes for manual entry into the `users` database table.</p>
+
+                <form method="post" action="hash_generator.php" class="card p-4 shadow-sm">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Enter Password (Plain Text)</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="e.g., testPassword123"
+                            required
+                            value="<?php echo $view->plainPassword; ?>"
+                        >
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Generate Hash</button>
+                </form>
+
+                <?php if (!empty($view->hashedPassword)): ?>
+                    <div class="card p-4 mt-4 bg-light">
+                        <h4>✅ Generated Hash Result</h4>
+                        <p class="text-success mb-2">
+                            **Plain Text:** <code><?php echo $view->plainPassword; ?></code>
+                        </p>
+                        <label for="hashedResult" class="form-label fw-bold">Copy this hash value into the `password_hash` column:</label>
+                        <textarea
+                            class="form-control"
+                            id="hashedResult"
+                            rows="3"
+                            readonly
+                            onclick="this.select();"
+                        ><?php echo $view->hashedPassword; ?></textarea>
+                        <small class="text-muted mt-2">The length and structure (starting with `$2y$` or similar) confirms it's a secure hash.</small>
+                    </div>
+                <?php elseif (isset($view->error)): ?>
+                    <div class="alert alert-danger mt-4">
+                        <?php echo $view->error; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+<?php
+require('template/footer.phtml');
+?>
