@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>BCS Placement Portal – Student Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/main.css" />
+    <script src="js/main.js" defer></script>
+</head>
+<body class="page page--auth">
+<header class="site-header">
+    <div class="site-header__inner">
+        <div class="site-header__brand">
+            <span class="site-header__logo-circle">BCS</span>
+            <div class="site-header__text">
+                <span class="site-header__title">BCS Placement Portal</span>
+                <span class="site-header__subtitle">Student Account Registration</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="auth">
+    <section class="auth-card" aria-labelledby="register-title">
+        <div class="auth-card__header">
+            <p class="auth-card__badge">Create Student Account</p>
+            <h1 id="register-title" class="auth-card__title">Join as a student</h1>
+            <p class="auth-card__subtitle">
+                Create a login to manage your placements. You can complete your
+                profile and CV upload after signing in.
+            </p>
+        </div>
+
+        <!-- STUDENT REGISTRATION FORM -->
+        <form
+                id="studentRegisterForm"
+                class="form form--auth"
+                action="../backend/register_student.php"
+                method="post"
+                enctype="multipart/form-data"
+                novalidate
+        >
+            <!-- Name -->
+            <div class="form__field">
+                <label for="name" class="form__label">Full name</label>
+                <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        class="form__input"
+                        placeholder="Alex Johnson"
+                        autocomplete="name"
+                        required
+                />
+                <p class="form__error" aria-live="polite"></p>
+            </div>
+
+            <!-- Email -->
+            <div class="form__field">
+                <label for="email" class="form__label">University email</label>
+                <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        class="form__input"
+                        placeholder="you@example.ac.uk"
+                        autocomplete="email"
+                        required
+                />
+                <p class="form__error" aria-live="polite"></p>
+            </div>
+
+            <!-- Password -->
+            <div class="form__field">
+                <label for="password" class="form__label">Password</label>
+                <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        class="form__input"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                />
+                <p class="form__error" aria-live="polite"></p>
+            </div>
+
+            <!-- Confirm password -->
+            <div class="form__field">
+                <label for="password_confirm" class="form__label">Confirm password</label>
+                <input
+                        id="password_confirm"
+                        name="password_confirm"
+                        type="password"
+                        class="form__input"
+                        placeholder="Repeat your password"
+                        autocomplete="new-password"
+                        minlength="6"
+                        required
+                />
+                <p class="form__error" aria-live="polite"></p>
+            </div>
+
+            <!-- CV upload (PDF only) -->
+            <div class="form__field">
+                <label for="cv_file" class="form__label">Upload CV (PDF only)</label>
+                <input
+                        id="cv_file"
+                        name="cv_file"
+                        type="file"
+                        class="form__input form__input--file"
+                        accept="application/pdf,.pdf"
+                />
+                <p class="form__error" aria-live="polite"></p>
+            </div>
+
+            <!-- Actions -->
+            <div class="form__actions">
+                <button type="submit" class="button button--primary">
+                    Create student account
+                </button>
+
+                <div class="form__links">
+                    <span>
+                        Already registered?
+                        <a href="login.html" class="link">Back to login</a>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <p class="auth__footer">
+        &copy; <span id="year"></span> BCS Manchester · Year-long placement matching
+    </p>
+</main>
+</body>
+</html>

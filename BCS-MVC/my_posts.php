@@ -41,5 +41,23 @@ else
 $view->success = $_SESSION['placements_success'] ?? null;
 unset($_SESSION['placements_success']);
 
+
+/**
+ * Handles the Delete operation from the modal.
+ * Triggered by the 'Delete' button in the modal footer.
+ */
+if (isset($_POST['delete_placement'])) {
+    /**
+     * @param int $pet_id The id of the pet to delete.
+     */
+    $placement_id = $_POST['delete_placement'];
+    //sent to model to delete record
+    $placementsDataSet->deletePlacement($placement_id);
+    // Reload page to show updated list
+    header('Location: my_posts.php');
+    exit;
+}
+
+
 // include the view
 require_once('Views/my_posts.phtml');

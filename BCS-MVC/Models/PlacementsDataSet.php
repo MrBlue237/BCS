@@ -79,5 +79,20 @@ class PlacementsDataSet {
 
     }
 
+    /**
+     * Deletes a pet record from the database based on its ID.
+     *
+     * @param int $pet_id The ID of the pet to delete.
+     * @return void
+     */
+    // Function to delete a pet by ID
+    public function deletePlacement($placement_id) {
+        $sqlQuery = 'DELETE FROM placement_opportunity WHERE placement_id = ?';
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        // Bind the ID for security
+        $statement->bindParam(1, $placement_id);
+
+        $statement->execute();
+    }
 
 }
