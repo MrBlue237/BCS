@@ -38,4 +38,4 @@ else
 }
 
 // include the view
-require_once('Views/posts.phtml');
+require_once('Views/my_posts.phtml');

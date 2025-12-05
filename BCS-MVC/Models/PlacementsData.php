@@ -4,8 +4,8 @@ class PlacementsData {
     protected $placement_id, $employer_id, $title, $description,$salary, $location, $start_date, $end_date;
 
     public function __construct($dbRow) {
-        $this->placement_id = $dbRow['placement_ID'];
-        $this->employer_id = $dbRow['employer_ID'];
+        $this->placement_id = $dbRow['placement_id'];
+        $this->employer_id = $dbRow['employer_id'];
         $this->title = $dbRow['title'];
         $this->description = $dbRow['description'];
         $this->salary = $dbRow['salary'];
