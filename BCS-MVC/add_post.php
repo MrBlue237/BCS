@@ -23,6 +23,9 @@ $view->postErrors = []; // Use a specific variable for errors
 $view->formData = []; // Store input data to repopulate form
 $placementsDataSet = new PlacementsDataSet();
 
+// Fetch all available SFIA skills for the form
+$view->availableSkills = $placementsDataSet->fetchAvailableSkills();
+
 /**
  * Handles the 'Add Post' submission.
  */
@@ -36,6 +39,7 @@ if(isset($_POST['add_post']))
     $start_date = trim($_POST['start'] ?? '');
     $end_date = trim($_POST['end'] ?? '');
     $employer_id = $_SESSION['user_id'];
+    $submitted_skills = $_POST['skills'] ?? [];
 
     $view->formData = $_POST; // Store all submitted data
 
@@ -66,11 +70,24 @@ if(isset($_POST['add_post']))
     // 3. Process insertion only if there are NO errors
     if(empty($view->postErrors)){
 
-        $placementsDataSet->insertPlacement($employer_id, $title, $description, $salary, $location, $start_date, $end_date);
+        // Step 3a: Insert the main placement record and get its new ID
+        $placementId = $placementsDataSet->insertPlacement($employer_id, $title, $description, $salary, $location, $start_date, $end_date);
 
-        $_SESSION['placements_success'] = 'Success: Placement added!';
-        header('Location: my_posts.php'); // Redirect to the employer's post list
-        exit;
+        if ($placementId) {
+            // Step 3b: Insert the required skills using the new placement ID
+            $success_skills = $placementsDataSet->insertRequiredSkills($placementId, $submitted_skills);
+
+            if ($success_skills) {
+                $_SESSION['placements_success'] = 'Success: Placement and required skills added!';
+                header('Location: my_posts.php');
+                exit;
+            } else {
+                $view->postErrors[] = "Placement added, but failed to save skill requirements.";
+            }
+
+        } else {
+            $view->postErrors[] = "Database error: Failed to insert placement record.";
+        }
     }
 }
 

@@ -65,8 +65,7 @@ class PlacementsDataSet {
     public function insertPlacement($employer_id, $title, $description,$salary, $location, $start_date, $end_date) {
         $sqlQuery = 'INSERT into placement_opportunity(employer_id, title, description,salary, location, start_date, end_date) VALUES(?,?,?,?,?,?,?);';
 
-        $statement = $this->_dbHandle->prepare($sqlQuery); // prepare a PDO statement
-
+        $statement = $this->_dbHandle->prepare($sqlQuery);
         $statement->bindParam(1, $employer_id);
         $statement->bindParam(2, $title);
         $statement->bindParam(3, $description);
@@ -75,8 +74,47 @@ class PlacementsDataSet {
         $statement->bindParam(6, $start_date);
         $statement->bindParam(7, $end_date);
 
-        $statement->execute(); // execute the PDO statement
+        if ($statement->execute()) {
+            return $this->_dbHandle->lastInsertId();
+        }
+        return false;
+    }
 
+    public function insertRequiredSkills($placementId, $skills) {
+        // Corrected SQL query uses the correct table and column names
+        $insertQuery = 'INSERT INTO placement_skills (placement_ID, skill_code, skill_level) VALUES (:pid, :code, :level);';
+        $insertStmt = $this->_dbHandle->prepare($insertQuery);
+
+        $success = true;
+        foreach ($skills as $code => $level) {
+            $level = intval($level);
+            if ($level >= 1 && $level <= 7) {
+                // Ensure the parameter name matches the SQL query (:pid, :code, :level)
+                $insertStmt->bindParam(':pid', $placementId, PDO::PARAM_INT);
+                $insertStmt->bindParam(':code', $code);
+                $insertStmt->bindParam(':level', $level, PDO::PARAM_INT);
+                if (!$insertStmt->execute()) {
+                    $success = false;
+                }
+            }
+        }
+        return $success;
+    }
+
+    /**
+     * Fetches all available SFIA skills for display in the form.
+     */
+    public function fetchAvailableSkills() {
+        $sqlQuery = 'SELECT skill_code, skill_name FROM SFIA_skills ORDER BY skill_name;';
+
+        try {
+            $statement = $this->_dbHandle->prepare($sqlQuery);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            // Return empty array to prevent 500 error if DB is empty/misconfigured
+            return [];
+        }
     }
 
     /**
