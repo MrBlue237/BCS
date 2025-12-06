@@ -62,10 +62,15 @@ class PlacementsDataSet {
      * @param int $user_id The ID of the user who reported the pet.
      * @return void
      */
-    public function insertPlacement($employer_id, $title, $description,$salary, $location, $start_date, $end_date) {
-        $sqlQuery = 'INSERT into placement_opportunity(employer_id, title, description,salary, location, start_date, end_date) VALUES(?,?,?,?,?,?,?);';
+    public function insertPlacement($employer_id, $title, $description,$salary, $location, $start_date, $end_date, $deadline, $date_posted) {
+
+        // SQL query updated to include 'deadline' and 'date_posted'
+        $sqlQuery = 'INSERT into placement_opportunity(employer_id, title, description, salary, location, start_date, end_date, deadline, date_posted, status) VALUES(?,?,?,?,?,?,?,?,?,?);';
 
         $statement = $this->_dbHandle->prepare($sqlQuery);
+
+        $status = 'Active'; // Hardcode default status for new posts
+
         $statement->bindParam(1, $employer_id);
         $statement->bindParam(2, $title);
         $statement->bindParam(3, $description);
@@ -73,6 +78,9 @@ class PlacementsDataSet {
         $statement->bindParam(5, $location);
         $statement->bindParam(6, $start_date);
         $statement->bindParam(7, $end_date);
+        $statement->bindParam(8, $deadline);
+        $statement->bindParam(9, $date_posted);
+        $statement->bindParam(10, $status);
 
         if ($statement->execute()) {
             return $this->_dbHandle->lastInsertId();

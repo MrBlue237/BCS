@@ -46,6 +46,11 @@
         </div>
 
         <div class="form-floating">
+            <input type="date" class="form-control" id="floatingDeadline" name="deadline" required
+                   value="<?php echo htmlspecialchars($view->formData['deadline'] ?? ''); ?>">
+            <label for="floatingDeadline">Application Deadline</label>
+        </div>
+        <div class="form-floating">
             <textarea class="form-control" id="floatingDescription" name="description" placeholder="Placement description" required><?php echo htmlspecialchars($view->formData['description'] ?? ''); ?></textarea>
             <label for="floatingDescription">Description</label>
         </div>

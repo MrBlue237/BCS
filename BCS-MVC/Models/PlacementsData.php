@@ -1,7 +1,7 @@
 <?php
 class PlacementsData {
 
-    protected $placement_id, $employer_id, $title, $description,$salary, $location, $start_date, $end_date;
+    protected $placement_id, $employer_id, $title, $description,$salary, $location, $start_date, $end_date, $status, $deadline, $date_posted;
 
     public function __construct($dbRow) {
         $this->placement_id = $dbRow['placement_ID'];
@@ -12,6 +12,9 @@ class PlacementsData {
         $this->location = $dbRow['location'];
         $this->start_date = $dbRow['start_date'];
         $this->end_date = $dbRow['end_date'];
+        $this->status = $dbRow['status'] ?? 'Active';
+        $this->deadline = $dbRow['deadline'] ?? null;
+        $this->date_posted = $dbRow['date_posted'] ?? null;
     }
 
     public function getPlacementID() {
@@ -40,5 +43,15 @@ class PlacementsData {
         return $this->end_date;
     }
 
+    public function getStatus() {
+        return $this->status;
+    }
+    public function getDeadline() {
+        return $this->deadline;
+    }
+
+    public function getDatePosted() {
+        return $this->date_posted;
+    }
 
 }
