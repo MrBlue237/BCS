@@ -38,6 +38,9 @@ if(isset($_POST['add_post']))
     $location = trim($_POST['location'] ?? '');
     $start_date = trim($_POST['start'] ?? '');
     $end_date = trim($_POST['end'] ?? '');
+    $deadline = trim($_POST['deadline'] ?? '');
+    $date_posted = date('Y-m-d');
+
     $employer_id = $_SESSION['user_id'];
     $submitted_skills = $_POST['skills'] ?? [];
 
@@ -57,6 +60,7 @@ if(isset($_POST['add_post']))
     // Validate date format (assumes YYYY-MM-DD from input type="date")
     $startDateObj = DateTime::createFromFormat('Y-m-d', $start_date);
     $endDateObj = DateTime::createFromFormat('Y-m-d', $end_date);
+    $deadlineObj = DateTime::createFromFormat('Y-m-d', $deadline);
 
     if ($startDateObj === false || $startDateObj->format('Y-m-d') !== $start_date) {
         $view->postErrors[] = "Start Date must be a valid date in YYYY-MM-DD format.";
@@ -67,11 +71,19 @@ if(isset($_POST['add_post']))
         $view->postErrors[] = "Start Date cannot be after the End Date.";
     }
 
+    if (empty($deadline)) {
+        $view->postErrors[] = "The application deadline is required.";
+    } elseif ($deadlineObj === false || $deadlineObj->format('Y-m-d') !== $deadline) {
+        $view->postErrors[] = "Deadline must be a valid date in YYYY-MM-DD format.";
+    } elseif ($deadlineObj < $startDateObj) {
+        $view->postErrors[] = "The Deadline cannot be before the Start Date.";
+    }
+
     // 3. Process insertion only if there are NO errors
     if(empty($view->postErrors)){
 
         // Step 3a: Insert the main placement record and get its new ID
-        $placementId = $placementsDataSet->insertPlacement($employer_id, $title, $description, $salary, $location, $start_date, $end_date);
+        $placementId = $placementsDataSet->insertPlacement($employer_id, $title, $description, $salary, $location, $start_date, $end_date, $deadline, $date_posted);
 
         if ($placementId) {
             // Step 3b: Insert the required skills using the new placement ID
