@@ -1,3 +1,47 @@
 <?php require('template/header.phtml') ?>
 
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mt-4 mb-4">BCS Placement Portal</h1>
+
+            <section class="card shadow-sm mb-5">
+                <div class="card-body">
+                    <h3 class="card-title">Why Placements Matter</h3>
+                    <p class="card-text lead">
+                        This web application was commissioned to encourage more students to undertake industrial placements.
+                        The primary goal is to help remove barriers and efficiently match students with placement employers by providing information about the benefits of placements to both students and employers.
+                    </p>
+
+                    <h4 class="mt-4">Benefits for Students</h4>
+                    <p>
+                        Undergraduate work placements are an effective method for improving employment outcomes in computing.
+                        Anecdotal evidence suggests that students who complete an industrial placement fare better in their final year academic studies and secure employment more readily.
+                    </p>
+
+                    <h4 class="mt-4">Benefits for Employers</h4>
+                    <p>
+                        The growth of the UK technology sector relies on computer science graduates. This portal uses terminology from the Skills for the Information Age (SFIA) framework to accurately match placements with students based on required skills and levels.
+                    </p>
+
+                    <h4 class="mt-4">Application Users</h4>
+                    <p class="text-muted">
+                        The portal is designed as a central resource and may be accessed and used by the following groups:
+                    <ul>
+                        <li>Staff in university careers offices.</li>
+                        <li>Employer talent management departments.</li>
+                        <li>Students accessing it in university libraries.</li>
+                    </ul>
+                    </p>
+                </div>
+            </section>
+
+            <div class="d-grid gap-2 col-md-6 mx-auto">
+                <?php if (!isset($_SESSION['logged_in'])): ?>
+                    <a href="login.php" class="btn btn-primary btn-lg">Login to get matched</a>
+                    <p class="text-center">New user? <a href="register.php">Create an account</a></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
 <?php require('template/footer.phtml') ?>
