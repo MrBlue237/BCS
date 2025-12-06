@@ -1,0 +1,59 @@
+<?php require('template/header.phtml'); ?>
+
+    <!-- The Edit pet record page -->
+    <h2>Edit Post Details</h2>
+
+    <!-- if error display it  -->
+<?php if (isset($view->error)): ?>
+    <div class="alert alert-danger"><?php echo $view->error; ?></div>
+<?php endif; ?>
+
+    <!-- show input boxes with values of original so they can easily just modify existing -->
+    <form action="edit_post.php" method="POST" enctype="multipart/form-data">
+
+        <input type="hidden" name="post_id" value="<?php echo htmlspecialchars($view->post->getPlacementID()); ?>">
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="name"
+                   value="<?php echo htmlspecialchars($view->pet->getName()); ?>" required>
+            <label for="name">Name</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="species"
+                   value="<?php echo htmlspecialchars($view->pet->getSpecies()); ?>" required>
+            <label for="species">Species</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="breed"
+                   value="<?php echo htmlspecialchars($view->pet->getBreed()); ?>" required>
+            <label for="breed">Breed</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="color"
+                   value="<?php echo htmlspecialchars($view->pet->getColor()); ?>" required>
+            <label for="color">Color</label>
+        </div>
+
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Change Image (Optional)</label>
+            <p><strong>Photo:<input type="file" name="petphoto" class="form-control" accept=".gif,.jpg,.jpeg,.png"
+                                    value="<?php echo htmlspecialchars($view->pet->getPhotoUrl()); ?>"></p>
+        </div>
+
+
+        <div class="form-floating mb-3">
+        <textarea class="form-control" name="description" style="height: 100px;">
+            <?php echo htmlspecialchars($view->pet->getDescription()); ?>
+        </textarea>
+            <label for="description">Description</label>
+        </div>
+        <!-- Allow to cancel or confirm edit-->
+        <a href="pets.php" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary" name="update_pet">Save Changes</button>
+
+    </form>
+
+<?php require('template/footer.phtml'); ?>
