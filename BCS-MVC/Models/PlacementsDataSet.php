@@ -133,4 +133,37 @@ class PlacementsDataSet {
         $statement->execute();
     }
 
+
+    public function fetchPostById($post_id) {
+        $sqlQuery = 'SELECT * FROM placement_opportunity WHERE placement_id = ?;';
+        $statement = $this->_dbHandle->prepare($sqlQuery); // prepare a PDO statement
+        $statement->bindParam(1, $post_id);
+        $statement->execute();
+        $dataSet = [];
+    // loop through and read the results of the query and cast
+    // them into a matching object
+        while ($row = $statement->fetch()) {
+            $dataSet[] = new PlacementsData($row);
+        }
+        return $dataSet;
+    }
+
+    public function updateData($post_id, $title, $salary, $location, $start,$end, $description) {
+        $sqlQuery = 'UPDATE placement_opportunity 
+                SET title = ?, salary = ?, location = ?, start_date = ?, end_date = ?, description = ?
+                WHERE placement_id = ?';
+
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+
+        $statement->bindParam(1, $title);
+        $statement->bindParam(2, $salary);
+        $statement->bindParam(3, $location);
+        $statement->bindParam(4, $start);
+        $statement->bindParam(5, $end);
+        $statement->bindParam(6, $description);
+        $statement->bindParam(7, $post_id);
+
+        $statement->execute();
+    }
+
 }

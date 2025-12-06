@@ -52,6 +52,11 @@
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $placementsData->getPlacementID(); ?>">
                                 Delete Draft
                             </button>
+                            <form action="edit_post.php" method="POST">
+                                <button type="submit" class="btn btn-warning" name ="id" value="<?php echo $placementsData->getPlacementID() ?>">
+                                    Edit
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
