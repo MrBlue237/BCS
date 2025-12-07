@@ -52,10 +52,30 @@
         <!-- </div>-->
 
         <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="deadline"
+                   value="<?php echo htmlspecialchars($view->placement->getDeadline()); ?>" required>
+            <label for="end">Deadline</label>
+        </div>
+
+        <div class="form-floating mb-3">
             <textarea class="form-control" name="description" style="height: 100px;">
                 <?php echo htmlspecialchars($view->placement->getDescription()); ?>
             </textarea>
             <label for="description">Description</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <textarea class="form-control" name="about" style="height: 100px;">
+                <?php echo htmlspecialchars($view->placement->getAboutCompany()); ?>
+            </textarea>
+            <label for="about">About</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <textarea class="form-control" name="offer" style="height: 100px;">
+                <?php echo htmlspecialchars($view->placement->getWhatWeOffer()); ?>
+            </textarea>
+            <label for="about">What You offer</label>
         </div>
 
         <!-- Allow to cancel or confirm edit-->

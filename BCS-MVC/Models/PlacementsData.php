@@ -1,7 +1,7 @@
 <?php
 class PlacementsData {
 
-    protected $placement_id, $employer_id, $title, $description,$salary, $location, $start_date, $end_date, $status, $deadline, $date_posted;
+    protected $placement_id, $employer_id, $title, $description,$salary, $location, $start_date, $end_date, $status, $deadline, $date_posted, $about_company, $what_we_offer;
 
     public function __construct($dbRow) {
         $this->placement_id = $dbRow['placement_ID'];
@@ -12,7 +12,9 @@ class PlacementsData {
         $this->location = $dbRow['location'];
         $this->start_date = $dbRow['start_date'];
         $this->end_date = $dbRow['end_date'];
-        $this->status = $dbRow['status'] ?? 'Active';
+        $this->status = $dbRow['status'];
+        $this->about_company = $dbRow['about_company'];
+        $this->what_we_offer = $dbRow['what_we_offer'];
         $this->deadline = $dbRow['deadline'] ?? null;
         $this->date_posted = $dbRow['date_posted'] ?? null;
     }
@@ -52,6 +54,14 @@ class PlacementsData {
 
     public function getDatePosted() {
         return $this->date_posted;
+    }
+
+    public function getAboutCompany() {
+        return $this->about_company;
+    }
+
+    public function getWhatWeOffer() {
+        return $this->what_we_offer;
     }
 
 }

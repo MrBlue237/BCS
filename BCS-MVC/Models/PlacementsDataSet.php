@@ -157,9 +157,9 @@ class PlacementsDataSet {
         return $dataSet;
     }
 
-    public function updateData($post_id, $title, $salary, $location, $start,$end, $description) {
+    public function updateData($post_id, $title, $salary, $location, $start,$end, $description, $deadline, $about, $offer) {
         $sqlQuery = 'UPDATE placement_opportunity 
-                SET title = ?, salary = ?, location = ?, start_date = ?, end_date = ?, description = ?
+                SET title = ?, salary = ?, location = ?, start_date = ?, end_date = ?, description = ?, deadline = ?, about_company = ?, what_we_offer = ?
                 WHERE placement_id = ?';
 
         $statement = $this->_dbHandle->prepare($sqlQuery);
@@ -170,7 +170,12 @@ class PlacementsDataSet {
         $statement->bindParam(4, $start);
         $statement->bindParam(5, $end);
         $statement->bindParam(6, $description);
-        $statement->bindParam(7, $post_id);
+        $statement->bindParam(7, $deadline);
+        $statement->bindParam(8, $about);
+        $statement->bindParam(9, $offer);
+        $statement->bindParam(10, $post_id);
+
+
 
         $statement->execute();
     }

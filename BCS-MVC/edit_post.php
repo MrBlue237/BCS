@@ -59,6 +59,9 @@ else if (isset($_POST['update_post'])) {
     $start = trim($_POST['start']);
     $end = trim($_POST['end']);
     $description = trim($_POST['description']);
+    $deadline = trim($_POST['deadline']);
+    $about = trim($_POST['about']);
+    $offer = trim($_POST['offer']);
 // Fetch the existing pet data to get the current image URL
 // $placementData = $placementDataSet->fetchPetById($pet_id);
 // $image_url = $placementData[0]->getPhotoUrl();//set as old value
@@ -89,7 +92,7 @@ else if (isset($_POST['update_post'])) {
 // }
 
     //make sure required fields are full
-    if (empty($title) || empty($salary) || empty($location) || empty($start) || empty($end) || empty($description))
+    if (empty($title) || empty($salary) || empty($location) || empty($start) || empty($end) || empty($description) || empty($deadline) || empty($about) || empty($offer))
     {
         // Re-load the data and show an error message
         $view->error = "All fields are required.";
@@ -98,7 +101,7 @@ else if (isset($_POST['update_post'])) {
     }
     else {
         // Call update function
-        $placementDataSet->updateData($post_id, $title, $salary, $location, $start,$end, $description);
+        $placementDataSet->updateData($post_id, $title, $salary, $location, $start,$end, $description, $deadline, $about, $offer);
         // Redirect back to the main pets page on success
         header('Location: my_posts.php');
         exit;
