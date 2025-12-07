@@ -39,6 +39,19 @@
                 <div class="card border-dark mb-3 h-100">
                     <div class="card-header">
                         <h5><?php echo $placementsData->getTitle(); ?></h5>
+                        <form action="my_posts.php" method="POST">
+                            <input type="hidden" name="post_id" value="<?php echo $placementsData->getPlacementID(); ?>">
+                            <?php if ($placementsData->getStatus() == "inactive"):?>
+                            <button type="submit" class="btn btn-primary" name ="activate_status">
+                                Activate post
+                            </button>
+                            <?php endif; ?>
+                            <?php if ($placementsData->getStatus() == "active"):?>
+                                <button type="submit" class="btn btn-primary" name ="de-activate_status">
+                                    De-activate post
+                                </button>
+                            <?php endif; ?>
+                        </form>
                     </div>
                     <?php //echo 'images/' .  htmlspecialchars($placementsData->getPhotoUrl())?><div class="col-md-8">
                         <div class="card-body">

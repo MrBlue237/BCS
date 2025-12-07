@@ -58,6 +58,50 @@ if (isset($_POST['delete_placement'])) {
     exit;
 }
 
+/**
+ * Handles the change of a post's status (active/de-active).
+ * Triggered by the 'activate/de-activate_status' button from the pet card.
+ */
+if(isset($_POST['activate_status'])){
+
+    /**
+     * @param string $status The current status of the pet ('lost' or 'found').
+     * @param int $pet_id The unique identifier for the pet.
+     */
+
+    //collect pet id to only change their status
+    $post_id = $_POST['post_id'];
+    //this will change it to the opposite of what it is currently
+    $placementsDataSet->makeStatusActive($post_id);
+
+    //provide appropriate success when completed
+    $_SESSION['post_success'] = 'Success: Status Changed';
+    //Reload page to show update
+    header('Location: my_posts.php');
+    exit;
+}
+/**
+ * Handles the change of a post's status (active/de-active).
+ * Triggered by the 'activate/de-activate_status' button from the pet card.
+ */
+if(isset($_POST['de-activate_status'])){
+
+    /**
+     * @param string $status The current status of the pet ('lost' or 'found').
+     * @param int $pet_id The unique identifier for the pet.
+     */
+
+    //collect pet id to only change their status
+    $post_id = $_POST['post_id'];
+    //this will change it to the opposite of what it is currently
+    $placementsDataSet->makeStatusInactive($post_id);
+
+    //provide appropriate success when completed
+    $_SESSION['post_success'] = 'Success: Status Changed';
+    //Reload page to show update
+    header('Location: my_posts.php');
+    exit;
+}
 
 // include the view
 require_once('Views/my_posts.phtml');

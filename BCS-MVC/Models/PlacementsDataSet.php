@@ -173,4 +173,35 @@ class PlacementsDataSet {
         $statement->execute();
     }
 
+    /**
+     * Changes the status of a pet between 'lost' and 'found'.
+     *
+     * @param string $status The current status of the pet ('lost' or 'found').
+     * @param int $pet_id The ID of the pet to update.
+     * @return void
+     */
+    public function makeStatusActive($post_id) {
+
+        $sqlQuery = "UPDATE placement_opportunity SET status = 'active' WHERE placement_id = ?";
+
+        $statement = $this->_dbHandle->prepare($sqlQuery); // prepare a PDO statement
+        $statement->bindParam(1, $post_id);//bind to prevent SQL injection
+        $statement->execute(); // execute the PDO statement
+    }
+
+    /**
+     * Changes the status of a pet between 'lost' and 'found'.
+     *
+     * @param string $status The current status of the pet ('lost' or 'found').
+     * @param int $pet_id The ID of the pet to update.
+     * @return void
+     */
+    public function makeStatusInactive($post_id) {
+
+        $sqlQuery = "UPDATE placement_opportunity SET status = 'inactive' WHERE placement_id = ?";
+
+        $statement = $this->_dbHandle->prepare($sqlQuery); // prepare a PDO statement
+        $statement->bindParam(1, $post_id);//bind to prevent SQL injection
+        $statement->execute(); // execute the PDO statement
+    }
 }
