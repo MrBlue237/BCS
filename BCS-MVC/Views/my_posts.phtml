@@ -39,6 +39,9 @@
                 <div class="card border-dark mb-3 h-100">
                     <div class="card-header">
                         <h5><?php echo $placementsData->getTitle(); ?></h5>
+                        <div class="w3-panel w3-red">
+                            <p>Deadline: <?php echo $placementsData->getDeadline(); ?></p>
+                        </div>
                         <form action="my_posts.php" method="POST">
                             <input type="hidden" name="post_id" value="<?php echo $placementsData->getPlacementID(); ?>">
                             <?php if ($placementsData->getStatus() == "inactive"):?>
