@@ -40,14 +40,15 @@ if(isset($_POST['add_post']))
     $end_date = trim($_POST['end'] ?? '');
     $deadline = trim($_POST['deadline'] ?? '');
     $date_posted = date('Y-m-d');
-
+    $about_company = trim($_POST['about'] ?? '');
+    $offers = trim($_POST['offers'] ?? '');
     $employer_id = $_SESSION['user_id'];
     $submitted_skills = $_POST['skills'] ?? [];
 
     $view->formData = $_POST; // Store all submitted data
 
     // 2. Validation Checks
-    if(empty($title) || empty($description) || empty($salary) || empty($location) || empty($start_date) || empty($end_date))
+    if(empty($title) || empty($description) || empty($salary) || empty($location) || empty($start_date) || empty($end_date) || empty($about_company) || empty($offers))
     {
         $view->postErrors[] = "All fields are required.";
     }
@@ -83,7 +84,7 @@ if(isset($_POST['add_post']))
     if(empty($view->postErrors)){
 
         // Step 3a: Insert the main placement record and get its new ID
-        $placementId = $placementsDataSet->insertPlacement($employer_id, $title, $description, $salary, $location, $start_date, $end_date, $deadline, $date_posted);
+        $placementId = $placementsDataSet->insertPlacement($employer_id, $title, $description, $salary, $location, $start_date, $end_date, $deadline, $date_posted, $about_company, $offers);
 
         if ($placementId) {
             // Step 3b: Insert the required skills using the new placement ID

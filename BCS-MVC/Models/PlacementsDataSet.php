@@ -62,14 +62,13 @@ class PlacementsDataSet {
      * @param int $user_id The ID of the user who reported the pet.
      * @return void
      */
-    public function insertPlacement($employer_id, $title, $description,$salary, $location, $start_date, $end_date, $deadline, $date_posted) {
+    public function insertPlacement($employer_id, $title, $description,$salary, $location, $start_date, $end_date, $deadline, $date_posted, $about_company, $offers) {
 
         // SQL query updated to include 'deadline' and 'date_posted'
-        $sqlQuery = 'INSERT into placement_opportunity(employer_id, title, description, salary, location, start_date, end_date, deadline, date_posted, status) VALUES(?,?,?,?,?,?,?,?,?,?);';
+        $sqlQuery = 'INSERT into placement_opportunity(employer_id, title, description, salary, location, start_date, end_date, deadline, date_posted, about_company, what_we_offer, status) VALUES(?,?,?,?,?,?,?,?,?,?,?, "inactive");';
 
         $statement = $this->_dbHandle->prepare($sqlQuery); // prepare a PDO statement
 
-        $status = 'Active'; // Hardcode default status for new posts
 
         $statement->bindParam(1, $employer_id);
         $statement->bindParam(2, $title);
@@ -80,7 +79,10 @@ class PlacementsDataSet {
         $statement->bindParam(7, $end_date);
         $statement->bindParam(8, $deadline);
         $statement->bindParam(9, $date_posted);
-        $statement->bindParam(10, $status);
+        $statement->bindParam(10, $about_company);
+        $statement->bindParam(11, $offers);
+
+
 
         if ($statement->execute()) {
             return $this->_dbHandle->lastInsertId();

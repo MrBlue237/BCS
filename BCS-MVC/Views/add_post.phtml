@@ -15,44 +15,58 @@
 
     <form action="add_post.php" method="POST">
 
+        <br>
         <div class="form-floating mb-3">
+            <h6>Company Name</h6>
             <input type="text" class="form-control" id="floatingTitle" name="title" required
                    value="<?php echo htmlspecialchars($view->formData['title'] ?? ''); ?>">
-            <label for="floatingTitle">Title</label>
         </div>
-
+        <br>
         <div class="form-floating">
+            <h6>Salary (e.g., 20000.00)</h6>
             <input type="number" step="0.01" class="form-control" id="floatingSalary" name="salary" required
                    value="<?php echo htmlspecialchars($view->formData['salary'] ?? ''); ?>">
-            <label for="floatingSalary">Salary (e.g., 20000.00)</label>
         </div>
-
+        <br>
+        <h6>Location</h6>
         <div class="form-floating">
             <input type="text" class="form-control" id="floatingLocation" name="location" required
                    value="<?php echo htmlspecialchars($view->formData['location'] ?? ''); ?>">
-            <label for="floatingLocation">Location</label>
         </div>
-
+        <br>
         <div class="form-floating">
+            <h6>Start Date</h6>
             <input type="date" class="form-control" id="floatingStart" name="start" required
                    value="<?php echo htmlspecialchars($view->formData['start'] ?? ''); ?>">
-            <label for="floatingStart">Start Date</label>
         </div>
-
+        <br>
         <div class="form-floating">
+            <h6>End date</h6>
             <input type="date" class="form-control" id="floatingEnd" name="end" required
                    value="<?php echo htmlspecialchars($view->formData['end'] ?? ''); ?>">
-            <label for="floatingEnd">End date</label>
         </div>
-
+        <br>
         <div class="form-floating">
+            <h6>Application Deadline</h6>
             <input type="date" class="form-control" id="floatingDeadline" name="deadline" required
                    value="<?php echo htmlspecialchars($view->formData['deadline'] ?? ''); ?>">
-            <label for="floatingDeadline">Application Deadline</label>
         </div>
+        <br>
         <div class="form-floating">
+            <h6>Description</h6>
             <textarea class="form-control" id="floatingDescription" name="description" placeholder="Placement description" required><?php echo htmlspecialchars($view->formData['description'] ?? ''); ?></textarea>
-            <label for="floatingDescription">Description</label>
+        </div>
+        <br>
+        <div class="form-floating">
+            <h6>What you offer</h6>
+            <p>List the benefits that you offer </p>
+            <textarea class="form-control" id="floatingOffer" name="offers" placeholder="What you offer description" required><?php echo htmlspecialchars($view->formData['what_we_offer'] ?? ''); ?></textarea>
+        </div>
+        <br>
+        <div class="form-floating">
+            <h6>About</h6>
+            <p>talk more about your what your company is and what it does</p>
+            <textarea class="form-control" id="floatingDescription" name="about" placeholder="talk more about your background" required><?php echo htmlspecialchars($view->formData['about_company'] ?? ''); ?></textarea>
         </div>
 
         <h3 class="mt-4 mb-3">Required SFIA Skills</h3>
