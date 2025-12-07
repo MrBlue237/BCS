@@ -21,6 +21,7 @@ class StudentDataSet {
                 SFIA_skills s 
             LEFT JOIN 
                 student_skills ss ON s.skill_code = ss.skill_code AND ss.student_id = :studentId;
+            ORDER BY s.skill_name;
         ';
 
         $statement = $this->_dbHandle->prepare($sqlQuery);
