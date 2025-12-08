@@ -14,6 +14,7 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
 }
 
 require_once('Models/UsersDataSet.php');
+require_once ('config.php');
 
 $view = new stdClass();
 $view->pageTitle = 'Register Account';
@@ -22,7 +23,37 @@ $view->success = '';
 $view->formData = [];
 $view->nameLabel = 'Full Name *';
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['g-recaptcha-response']) || empty($_POST['g-recaptcha-response'])) {
+        $view->loginError = 'Captcha is required.';
+    } else {
+        $captcha = $_POST['g-recaptcha-response'];
+        $secretKey = RECAPTCHA_SECRET_KEY;
+        $ip = $_SERVER['REMOTE_ADDR'];
+
+        $verifyURL = 'https://www.google.com/recaptcha/api/siteverify';
+        $response = [
+            'secret' => $secretKey,
+            'response' => $captcha,
+            'remoteip' => $ip
+        ];
+
+        $options = [
+            'http' => [
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($response)
+            ]
+        ];
+        $context = stream_context_create($options);
+        $result = file_get_contents($verifyURL, false, $context);
+        $result = json_decode($result);
+
+        if ($result->success !== true) {
+            $view->loginError = 'Captcha is required.';
+        }
+    }
     $formData = [
         'email' => trim($_POST['email'] ?? ''),
         'password' => $_POST['password'] ?? '',
