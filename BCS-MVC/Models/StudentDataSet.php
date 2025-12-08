@@ -65,4 +65,56 @@ class StudentDataSet {
             return false;
         }
     }
+
+    public function getSkillMatchCounts(int $studentId, int $placementId): array {
+
+        // Calculate the matched count
+        $matchedQuery = '
+            SELECT 
+                COUNT(ps.skill_code)
+            FROM 
+                placement_skills ps
+            JOIN 
+                student_skills ss ON ps.skill_code = ss.skill_code
+            WHERE 
+                ps.placement_ID = :pid   -- Corrected Casing
+                AND ss.student_id = :sid
+                AND ss.sfia_level >= ps.skill_level;
+        ';
+
+        // Calculate the total required skills
+        $totalQuery = '
+            SELECT 
+                COUNT(skill_code)
+            FROM 
+                placement_skills
+            WHERE 
+                placement_ID = :pid;
+        ';
+
+        try {
+            // Execute Matched Query
+            $stmtMatched = $this->_dbHandle->prepare($matchedQuery);
+            $stmtMatched->bindParam(':pid', $placementId, PDO::PARAM_INT);
+            $stmtMatched->bindParam(':sid', $studentId, PDO::PARAM_INT);
+            $stmtMatched->execute();
+            $matchedCount = (int)$stmtMatched->fetchColumn();
+
+            // Execute Total Query
+            $stmtTotal = $this->_dbHandle->prepare($totalQuery);
+            $stmtTotal->bindParam(':pid', $placementId, PDO::PARAM_INT);
+            $stmtTotal->execute();
+            $totalRequired = (int)$stmtTotal->fetchColumn();
+
+            return [
+                'matched_count' => $matchedCount,
+                'total_required' => $totalRequired
+            ];
+        } catch (PDOException $e) {
+            return [
+                'matched_count' => 0,
+                'total_required' => 0
+            ];
+        }
+    }
 }
