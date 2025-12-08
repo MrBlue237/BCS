@@ -77,7 +77,7 @@ class StudentDataSet {
             JOIN 
                 student_skills ss ON ps.skill_code = ss.skill_code
             WHERE 
-                ps.placement_ID = :pid   -- Corrected Casing
+                ps.placement_ID = :pid
                 AND ss.student_id = :sid
                 AND ss.sfia_level >= ps.skill_level;
         ';
