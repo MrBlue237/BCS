@@ -15,7 +15,9 @@
 
                             <h4 class="card-title"><?= $placement->getTitle(); ?></h4>
                             <p class="card-text"><?= $placement->getDescription(); ?></p>
-
+                            <div class="w3-panel w3-red">
+                                <p>Deadline: <?php echo $placement->getDeadline(); ?></p>
+                            </div>
                             <ul class="list-group list-group-flush mb-3">
                                 <li class="list-group-item"><strong>Salary:</strong> £<?= $placement->getSalary(); ?></li>
                                 <li class="list-group-item"><strong>Location:</strong> <?= $placement->getLocation(); ?></li>
@@ -23,11 +25,11 @@
                                 <li class="list-group-item"><strong>End:</strong> <?= $placement->getEndDate(); ?></li>
                             </ul>
 
-                            <a href="placement_details.php?id=<?= $placement->getPlacementID(); ?>"
-                               class="btn btn-primary w-100">
-                                View Details
-                            </a>
-
+                            <form action="view_details.php" method="POST">
+                                <button type="submit" class="btn btn-primary w-100" name ="view" value="<?php echo $placement->getPlacementID() ?>">
+                                    View Details
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

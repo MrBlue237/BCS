@@ -76,8 +76,8 @@ if(isset($_POST['add_post']))
         $view->postErrors[] = "The application deadline is required.";
     } elseif ($deadlineObj === false || $deadlineObj->format('Y-m-d') !== $deadline) {
         $view->postErrors[] = "Deadline must be a valid date in YYYY-MM-DD format.";
-    } elseif ($deadlineObj < $startDateObj) {
-        $view->postErrors[] = "The Deadline cannot be before the Start Date.";
+    } elseif ($deadlineObj > $startDateObj) {
+        $view->postErrors[] = "The Deadline cannot be after the Start Date.";
     }
 
     // 3. Process insertion only if there are NO errors
