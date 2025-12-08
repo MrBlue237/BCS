@@ -1,0 +1,54 @@
+<?php require('template/header.phtml'); ?>
+
+    <!-- The Edit pet record page -->
+    <h2>Edit Profile Details</h2>
+
+
+    <!-- show input boxes with values of original so they can easily just modify existing -->
+    <form action="edit_student_profile.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="stud_id" value="<?php echo htmlspecialchars($view->users->getUserID()); ?>">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="name"
+                   value="<?php echo htmlspecialchars($view->users->getName()); ?>" required>
+            <label for="title">Change name</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="phone_number"
+                   value="<?php echo htmlspecialchars($view->users->getPhoneNumber()); ?>" required>
+            <label for="phone_number">Phone Number *</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="address"
+                   value="<?php echo htmlspecialchars($view->users->getPostalAddress()); ?>" required>
+            <label for="address">Address</label>
+        </div>
+
+        <input type="hidden" name="current_cv_path"
+               value="<?php echo htmlspecialchars($view->users->getCvFilePath()); ?>">
+
+        <div class="form-floating mb-3">
+            <input type="file" class="form-control" name="cv_file_upload" accept=".pdf">
+            <label for="cv_file_upload">Change CV (.pdf only)</label>
+            <?php if (!empty($view->users->getCvFilePath())): ?>
+                <small class="form-text text-muted ms-2">Current CV: <?php echo htmlspecialchars($view->users->getCvFilePath()); ?></small>
+            <?php endif; ?>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="email"
+                   value="<?php echo htmlspecialchars($view->users->getEmail()); ?>" required>
+            <label for="email">Change Email Address</label>
+        </div>
+
+
+        <!-- Allow to cancel or confirm edit-->
+        <a href="student_profile.php" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary" name="update_student_profile">Save Changes</button>
+    </form>
+
+<?php require('template/footer.phtml'); ?>
+
+
+
