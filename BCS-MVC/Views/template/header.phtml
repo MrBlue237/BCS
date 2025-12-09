@@ -41,7 +41,6 @@ $user_email = $_SESSION['email'] ?? '';
                     <a class="nav-link" href="index.php">Home</a>
 
                 </li>
-
                 <?php if ($is_logged_in && $user_role === 'student'): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="student_profile.php">My Profile</a>
@@ -69,6 +68,9 @@ $user_email = $_SESSION['email'] ?? '';
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="nav-link" href="login.php">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="browsing.php">Browse</a>
                     </li>
                 <?php endif; ?>
             </ul>

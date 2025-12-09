@@ -4,7 +4,12 @@
 
         <h1 class="mb-4 text-primary"><?php echo htmlspecialchars($view->placement->getTitle()); ?></h1>
 
-        <a href="studentMatches.php" class="btn btn-outline-secondary mb-4">← Back to All Placements</a>
+        <!-- Allow to cancel or confirm edit-->
+        <?php if (isset($_SESSION['logged_in'])): ?>
+            <a href="studentMatches.php" class="btn btn-outline-secondary mb-4">← Back to All Placements</a>
+        <?php else:?>
+            <a href="browsing.php" class="btn btn-outline-secondary mb-4">← Back to All Placements</a>
+        <?php endif; ?>
 
         <div class="row">
 
