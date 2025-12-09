@@ -93,7 +93,7 @@ class UsersDataSet {
         }
     }
 
-    public function updateStudentsData($name, $number, $address, $cv, $email, $stud_id) {
+    public function updateUsersData($name, $number, $address, $cv, $email, $user_id) {
         $sqlQuery = 'UPDATE users 
                 SET name = ?, phone_number = ?, postal_address = ?, cv_file_path = ?, email = ?
                 WHERE user_id = ?';
@@ -105,7 +105,7 @@ class UsersDataSet {
         $statement->bindParam(3, $address);
         $statement->bindParam(4, $cv);
         $statement->bindParam(5, $email);
-        $statement->bindParam(6, $stud_id);
+        $statement->bindParam(6, $user_id);
 
 
 

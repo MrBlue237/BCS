@@ -1,0 +1,37 @@
+<?php require('template/header.phtml'); ?>
+
+    <div class="container mt-4">
+        <div class="row">
+
+            <div class="col-md-12">
+                <h1 class="mb-3">Employer Profile: <?php echo htmlspecialchars($view->user->getName()); ?></h1>
+            </div>
+
+            <?php if ($view->updateSuccess): ?>
+                <div class="alert alert-success">Profile updated successfully!</div>
+            <?php endif; ?>
+            <?php if ($view->updateError): ?>
+                <div class="alert alert-danger">Error updating profile. Please try again.</div>
+            <?php endif; ?>
+
+            <div >
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">Contact Details</div>
+                    <div class="card-body">
+                        <p><strong>Email:</strong> <?php echo htmlspecialchars($view->user->getEmail()); ?></p>
+                        <p><strong>Phone:</strong> <?php echo htmlspecialchars($view->user->getPhoneNumber()); ?></p>
+                        <p><strong>Address:</strong> <?php echo nl2br(htmlspecialchars($view->user->getPostalAddress())); ?></p>
+
+                        <form action="edit_profile.php" method="POST">
+                            <button type="submit" class="btn btn-primary" name ="user_id" value="<?php echo $view->user->getUserID() ?>">
+                                Edit Profile
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<?php require('template/footer.phtml'); ?>

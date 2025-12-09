@@ -26,8 +26,8 @@
                         <?php else: ?>
                             <p class="text-danger">No CV uploaded.</p>
                         <?php endif; ?>
-                        <form action="edit_student_profile.php" method="POST">
-                            <button type="submit" class="btn btn-primary" name ="stud_id" value="<?php echo $view->user->getUserID() ?>">
+                        <form action="edit_profile.php" method="POST">
+                            <button type="submit" class="btn btn-primary" name ="user_id" value="<?php echo $view->user->getUserID() ?>">
                                 Edit Profile
                             </button>
                         </form>

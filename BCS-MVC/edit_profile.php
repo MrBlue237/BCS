@@ -19,7 +19,7 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once('Models/UsersDataSet.php'); // Your dataset class
 //make view class
 $view = new stdClass();
-$view->pageTitle = 'Edit Student Details';
+$view->pageTitle = 'Edit Details';
 // create a new sighting dataset object that we can generate data from
 $usersDataSet = new UsersDataSet();
 
@@ -28,7 +28,7 @@ $usersDataSet = new UsersDataSet();
  * Check updating the placement record submitted .
  * Triggered by the 'Save Changes' button.
  */
-if (isset($_POST['update_student_profile'])) {
+if (isset($_POST['update_profile'])) {
 // Handle the form submission
     /**
      * @param string $name name of current pet
@@ -39,13 +39,13 @@ if (isset($_POST['update_student_profile'])) {
      * @param string $description description of current pet
      * @param string $petData data of current pet
      */
-    $stud_id = $_POST['stud_id']; // ID is passed via a hidden field
+    $user_id = $_POST['user_id']; // ID is passed via a hidden field
     $name = trim($_POST['name']);
     $number = trim($_POST['phone_number']);
     $address = trim($_POST['address']);
     $email = trim($_POST['email']);
 
-    $view->users = $usersDataSet->fetchUserByID($stud_id);//set as old value
+    $view->users = $usersDataSet->fetchUserByID($user_id);//set as old value
     $cv = $view->users->getCvFilePath(); // correct getter
 
     if (isset($_FILES['cv_file_upload']) && $_FILES['cv_file_upload']['error'] === UPLOAD_ERR_OK) {
@@ -87,9 +87,14 @@ if (isset($_POST['update_student_profile'])) {
     }
     else {
         // Call update function
-        $usersDataSet->updateStudentsData($name, $number, $address, $cv, $email,$stud_id);
+        $usersDataSet->updateUsersData($name, $number, $address, $cv, $email,$user_id);
         // Redirect back to the main pets page on success
-        header('Location: student_profile.php');
+        if (isset($_SESSION['logged_in']) && ($_SESSION['role'] ?? '') === 'student'){
+            header('Location: student_profile.php');
+        }
+        else{
+            header('Location: employer_profile.php');
+        }
         exit;
     }
 }
@@ -98,14 +103,14 @@ if (isset($_POST['update_student_profile'])) {
  * Check if the ID is present for the page load.
  * Triggered when clicking the 'Edit' button on the main pets.php page.
  */
-else if (isset($_POST['stud_id'])){
+else if (isset($_POST['user_id'])){
     /**
      * @param int $pet_id id of current pet to edit
      */
-    $stud_id = $_POST['stud_id'];
-    $view->users = $usersDataSet->fetchUserByID($stud_id);
+    $user_id = $_POST['user_id'];
+    $view->users = $usersDataSet->fetchUserByID($user_id);
 }
 
 
 // Include the form view
-require_once('Views/edit_student_profile.phtml');
+require_once('Views/edit_profile.phtml');
