@@ -24,10 +24,10 @@ class UsersDataSet {
     }
 
     public function fetchUserByID($userId) {
-        $sqlQuery = 'SELECT * FROM users WHERE user_id = :userId;';
+        $sqlQuery = 'SELECT * FROM users WHERE user_id = ?;';
 
         $statement = $this->_dbHandle->prepare($sqlQuery);
-        $statement->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $statement->bindParam(1, $userId);
         $statement->execute();
 
         $row = $statement->fetch(PDO::FETCH_ASSOC);
@@ -91,5 +91,25 @@ class UsersDataSet {
         } catch (PDOException $e) {
             return false;
         }
+    }
+
+    public function updateStudentsData($name, $number, $address, $cv, $email, $stud_id) {
+        $sqlQuery = 'UPDATE users 
+                SET name = ?, phone_number = ?, postal_address = ?, cv_file_path = ?, email = ?
+                WHERE user_id = ?';
+
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+
+        $statement->bindParam(1, $name);
+        $statement->bindParam(2, $number);
+        $statement->bindParam(3, $address);
+        $statement->bindParam(4, $cv);
+        $statement->bindParam(5, $email);
+        $statement->bindParam(6, $stud_id);
+
+
+
+
+        $statement->execute();
     }
 }

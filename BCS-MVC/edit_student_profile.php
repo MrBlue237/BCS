@@ -23,23 +23,12 @@ $view->pageTitle = 'Edit Student Details';
 // create a new sighting dataset object that we can generate data from
 $usersDataSet = new UsersDataSet();
 
-/**
- * Check if the ID is present for the page load.
- * Triggered when clicking the 'Edit' button on the main pets.php page.
- */
-if (isset($_POST['stud_id'])){
-    /**
-     * @param int $pet_id id of current pet to edit
-     */
-    $stud_id = $_POST['stud_id'];
-    $view->users = $usersDataSet->fetchUserByID($stud_id);
-    }
 
 /**
  * Check updating the placement record submitted .
  * Triggered by the 'Save Changes' button.
  */
-else if (isset($_POST['update_student_profile'])) {
+if (isset($_POST['update_student_profile'])) {
 // Handle the form submission
     /**
      * @param string $name name of current pet
@@ -61,6 +50,7 @@ else if (isset($_POST['update_student_profile'])) {
 
     if (isset($_FILES['cv_file_upload']) && $_FILES['cv_file_upload']['error'] === UPLOAD_ERR_OK) {
 
+
         $file = $_FILES['cv_file_upload'];
         $allowedExtension = 'pdf';
 
@@ -74,6 +64,7 @@ else if (isset($_POST['update_student_profile'])) {
         }
         else {
             $safeFileName = uniqid('cv_', true) . '.' . $allowedExtension;
+            define('CV_UPLOAD_DIR', __DIR__ . '/BCS-MVC/cv_files/');
             $targetPath = CV_UPLOAD_DIR . $safeFileName;
             $cv = $targetPath;
             if (move_uploaded_file($file['tmp_name'], $targetPath)) {
@@ -102,6 +93,19 @@ else if (isset($_POST['update_student_profile'])) {
         exit;
     }
 }
+
+/**
+ * Check if the ID is present for the page load.
+ * Triggered when clicking the 'Edit' button on the main pets.php page.
+ */
+else if (isset($_POST['stud_id'])){
+    /**
+     * @param int $pet_id id of current pet to edit
+     */
+    $stud_id = $_POST['stud_id'];
+    $view->users = $usersDataSet->fetchUserByID($stud_id);
+}
+
 
 // Include the form view
 require_once('Views/edit_student_profile.phtml');
