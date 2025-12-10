@@ -25,7 +25,7 @@
                 <div class="form-group me-3 mb-2">
                     <label for="sort_option" class="form-label">Sort Placements By:</label>
                     <select class="form-select" id="sort_option" name="sort_option">
-                        <option value="">-- Select an Option --</option>
+                        <option value="match_high" <?php echo ($view->selectedSort ?? '') === 'match_high' ? 'selected' : ''; ?>>Match %: High to Low</option>
                         <option value="deadline_soonest" <?php echo ($view->selectedSort ?? '') === 'deadline_soonest' ? 'selected' : ''; ?>>Deadline: Soonest</option>
                         <option value="deadline_latest" <?php echo ($view->selectedSort ?? '') === 'deadline_latest' ? 'selected' : ''; ?>>Deadline: Latest</option>
                         <option value="salary_high" <?php echo ($view->selectedSort ?? '') === 'salary_high' ? 'selected' : ''; ?>>Salary: High to Low</option>

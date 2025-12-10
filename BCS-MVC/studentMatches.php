@@ -18,35 +18,30 @@ $view = new stdClass();
 $view->pageTitle = 'Matched Placements';
 
 $placements = [];
-$selectedSort = $_POST['sort_option'] ?? '';
+$selectedSort = $_POST['sort_option'] ?? 'match_high';
 $selectedMatchPercentage = $_POST['match_percentage'] ?? '50';
 
 if (isset($_POST['cancel'])) {
     $placements = $placementsDataSet->fetchAllPosts();
-    $selectedSort = '';
+    $selectedSort = 'match_high';
     $selectedMatchPercentage = '50';
 }
-elseif (isset($_POST['apply_search']) && !empty($selectedSort)) {
+elseif (isset($_POST['apply_search']) && !empty($selectedSort) && $selectedSort !== 'match_high') {
     $placements = $placementsDataSet->fetchPostsWithSort($selectedSort);
 }
 else {
     $placements = $placementsDataSet->fetchAllPosts();
 }
 
-
-// --- 2. Calculate Matches and Match Percentage for all fetched placements ---
 $placementsWithMatches = [];
 foreach ($placements as $placement) {
     $placementId = $placement->getPlacementID();
 
-    // Calculate the match count using the new Model method
     $counts = $studentDataSet->getSkillMatchCounts($studentId, $placementId);
 
-    // Add both properties to the placement object for the view
     $placement->matchedCount = $counts['matched_count'];
     $placement->totalRequired = $counts['total_required'];
 
-    // Calculate percentage
     if ($placement->totalRequired > 0) {
         $percentage = round(($placement->matchedCount / $placement->totalRequired) * 100);
     } else {
@@ -67,6 +62,15 @@ if ($selectedMatchPercentage !== '') {
         }
     }
     $placements = $filteredPlacements;
+}
+
+if ($selectedSort === 'match_high') {
+    usort($placements, function($a, $b) {
+        if ($a->matchPercentage == $b->matchPercentage) {
+            return 0;
+        }
+        return ($a->matchPercentage < $b->matchPercentage) ? 1 : -1;
+    });
 }
 
 
