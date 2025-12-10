@@ -1,0 +1,33 @@
+<?php require('template/header.phtml'); ?>
+
+<h2>Matched Students</h2>
+
+<?php if (empty($view->matchedStudents)): ?>
+    <div class="alert alert-warning">No students matched this placement.</div>
+<?php endif; ?>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    <?php foreach ($view->matchedStudents as $student): ?>
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5><?php echo htmlspecialchars($student['name']); ?></h5>
+                </div>
+
+                <div class="card-body">
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($student['email']); ?></p>
+
+                    <?php if (!empty($student['cv_file_path'])): ?>
+                        <a href="<?php echo htmlspecialchars($student['cv_file_path']); ?>" class="btn btn-primary" target="_blank">
+                            View CV
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+<a href="my_posts.php" class="btn btn-secondary mt-3">Back</a>
+
+<?php require('template/footer.phtml'); ?>

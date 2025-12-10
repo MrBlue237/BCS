@@ -117,4 +117,45 @@ class StudentDataSet {
             ];
         }
     }
+
+    public function countMatchesForPlacement( $placementId)
+    {
+        // Get all students
+        $studentsQuery = "SELECT user_id FROM users WHERE role = 'student'";
+        $stmt = $this->_dbHandle->prepare($studentsQuery);
+        $stmt->execute();
+        $students = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        $matchCount = 0;
+
+        foreach ($students as $sid) {
+            $counts = $this->getSkillMatchCounts($sid, $placementId);
+
+            if ($counts['total_required'] > 0) {
+                $percentage = ($counts['matched_count'] / $counts['total_required']) * 100;
+                if ($percentage >= 50) {
+                    $matchCount++;
+                }
+            }
+        }
+
+        return $matchCount;
+    }
+
+    public function getMatchedStudentsForPlacement( $placementId)
+    {
+        $sql = "
+        SELECT u.user_id, u.name, u.email, u.cv_file_path
+        FROM matches_student_placement m
+        JOIN users u ON m.user_id = u.user_id
+        WHERE m.placement_id = :pid
+    ";
+
+        $stmt = $this->_dbHandle->prepare($sql);
+        $stmt->bindParam(1, $placementId);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

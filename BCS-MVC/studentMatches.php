@@ -34,10 +34,15 @@ foreach ($placements as $placement) {
     // Calculate percentage
     if ($placement->totalRequired > 0) {
         $percentage = round(($placement->matchedCount / $placement->totalRequired) * 100);
+
     } else {
         $percentage = 0;
     }
     $placement->matchPercentage = $percentage;
+
+    if($percentage >= 50) {
+        $placementsDataSet->insertMatches($studentId, $placementId);
+    }
 }
 
 $view->placements = $placements;

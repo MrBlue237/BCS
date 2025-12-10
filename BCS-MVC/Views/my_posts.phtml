@@ -55,6 +55,12 @@
                                 </button>
                             <?php endif; ?>
                         </form>
+                        <form action="display_matches.php" method="POST">
+                            <input type="hidden" name="post_id" value="<?php echo $placementsData->getPlacementID(); ?>">
+                            <button type="submit" class="btn btn-info" name ="matches">
+                                Matches: <?php echo $placementsData->matchCount; ?>
+                            </button>
+                        </form>
                     </div>
                     <?php //echo 'images/' .  htmlspecialchars($placementsData->getPhotoUrl())?><div class="col-md-8">
                         <div class="card-body">

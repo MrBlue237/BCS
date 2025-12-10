@@ -211,4 +211,27 @@ class PlacementsDataSet {
         $statement->bindParam(1, $post_id);//bind to prevent SQL injection
         $statement->execute(); // execute the PDO statement
     }
+
+    public function insertMatches($studentId, $placementId) {
+
+        $checkQuery = "SELECT COUNT(*) FROM matches_student_placement 
+                   WHERE user_id = ? AND placement_id = ?";
+
+        $checkStmt = $this->_dbHandle->prepare($checkQuery);
+        $checkStmt->execute([$studentId, $placementId]);
+        $exists = $checkStmt->fetchColumn();
+
+        if ($exists == 0) {
+
+            $sqlQuery = 'INSERT INTO matches_student_placement (user_ID, placement_ID) VALUES (?, ?);';
+
+            $statement = $this->_dbHandle->prepare($sqlQuery);
+
+            $statement->bindParam(1, $studentId);
+            $statement->bindParam(2, $placementId);
+
+            $statement->execute();
+        }
+    }
+
 }

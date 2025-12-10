@@ -9,6 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 // load required classes
 require_once('Models/PlacementsDataSet.php');
+require_once('Models/StudentDataSet.php');
 
 // make a view class
 $view = new stdClass();
@@ -102,6 +103,17 @@ if(isset($_POST['de-activate_status'])){
     header('Location: my_posts.php');
     exit;
 }
+
+$placements = $placementsDataSet->fetchPostsByEmployerID($employerId);
+$studentDataSet = new StudentDataSet();
+
+foreach ($placements as $placement) {
+    $placementId = $placement->getPlacementID();
+    $placement->matchCount = $studentDataSet->countMatchesForPlacement($placementId);
+}
+
+$view->placementsDataSet = $placements;
+
 
 // include the view
 require_once('Views/my_posts.phtml');
