@@ -31,9 +31,9 @@ class PlacementsDataSet {
     }
 
     /**
-     * Fetches all pet records from the database, ordered by the date reported (newest first).
+     * Fetches all placement records from the database (default).
      *
-     * @return array An array of PetsData objects.
+     * @return array An array of PlacementsData objects.
      */
     public function fetchAllPosts() {
         $sqlQuery = 'SELECT * FROM placement_opportunity;';
@@ -49,6 +49,47 @@ class PlacementsDataSet {
         }
         return $dataSet;
     }
+
+    /**
+     * Fetches all placement records from the database with a specific sort order.
+     *
+     * @param string $sortType The type of sort to apply: 'deadline_soonest', 'deadline_latest', 'salary_high', 'salary_low'.
+     * @return array An array of PlacementsData objects.
+     */
+    public function fetchPostsWithSort($sortType) {
+        $sqlQuery = 'SELECT * FROM placement_opportunity';
+        $orderClause = '';
+
+        switch ($sortType) {
+            case 'deadline_soonest':
+                $orderClause = ' ORDER BY deadline ASC';
+                break;
+            case 'deadline_latest':
+                $orderClause = ' ORDER BY deadline DESC';
+                break;
+            case 'salary_high':
+                $orderClause = ' ORDER BY salary DESC';
+                break;
+            case 'salary_low':
+                $orderClause = ' ORDER BY salary ASC';
+                break;
+            default:
+                // Default to fetching all without specific sort if an unknown type is passed
+                $orderClause = '';
+                break;
+        }
+
+        $sqlQuery .= $orderClause;
+
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        $statement->execute();
+        $dataSet = [];
+        while ($row = $statement->fetch()) {
+            $dataSet[] = new PlacementsData($row);
+        }
+        return $dataSet;
+    }
+
     /**
      * Inserts a new pet record into the database, setting the initial status to 'lost'.
      *
@@ -122,7 +163,6 @@ class PlacementsDataSet {
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            // Return empty array to prevent 500 error if DB is empty/misconfigured
             return [];
         }
     }
@@ -158,7 +198,7 @@ class PlacementsDataSet {
     }
 
     public function updateData($post_id, $title, $salary, $location, $start,$end, $description, $deadline, $about, $offer) {
-        $sqlQuery = 'UPDATE placement_opportunity 
+        $sqlQuery = 'UPDATE placement_opportunity
                 SET title = ?, salary = ?, location = ?, start_date = ?, end_date = ?, description = ?, deadline = ?, about_company = ?, what_we_offer = ?
                 WHERE placement_id = ?';
 
@@ -214,7 +254,7 @@ class PlacementsDataSet {
 
     public function insertMatches($studentId, $placementId) {
 
-        $checkQuery = "SELECT COUNT(*) FROM matches_student_placement 
+        $checkQuery = "SELECT COUNT(*) FROM matches_student_placement
                    WHERE user_id = ? AND placement_id = ?";
 
         $checkStmt = $this->_dbHandle->prepare($checkQuery);
@@ -233,49 +273,4 @@ class PlacementsDataSet {
             $statement->execute();
         }
     }
-
-    public function salary_1($salary)
-    {
-        $sqlQuery = 'SELECT * FROM placement_opportunity WHERE salary >= :salary ORDER BY salary ASC';
-        $statement = $this->_dbHandle->prepare($sqlQuery);
-        $statement->bindParam(":salary", $salary);
-        $statement->execute();
-        $dataSet = [];
-        while ($row = $statement->fetch()) {
-            $dataSet[] = new PlacementsData($row);
-        }
-        return $dataSet;
-    }
-
-    public function order_by($order){
-        $sqlQuery = 'SELECT * FROM placement_opportunity ORDER BY salary '.$order;
-        $statement = $this->_dbHandle->prepare($sqlQuery);
-        $statement->execute();
-        $dataSet = [];
-        while ($row = $statement->fetch()) {
-            $dataSet[] = new PlacementsData($row);
-        }
-        return $dataSet;
-    }
-
-    public function date($date){
-        $sqlQuery = 'SELECT * FROM placement_opportunity WHERE deadline DESC';
-
-        if ($date === 'oldest') {
-            $sqlQuery = 'SELECT * FROM placement_opportunity ORDER BY deadline ASC';
-        }elseif ($date === 'latest') {
-            $sqlQuery = 'SELECT * FROM placement_opportunity ORDER BY deadline DESC';
-        }
-
-        $statement = $this->_dbHandle->prepare($sqlQuery);
-        $statement->bindParam(":date", $date);
-        $statement->execute();
-        $dataSet = [];
-        while ($row = $statement->fetch()) {
-            $dataSet[] = new PlacementsData($row);
-
-        }
-        return $dataSet;
-    }
-
 }

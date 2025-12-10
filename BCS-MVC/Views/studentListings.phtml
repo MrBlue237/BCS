@@ -9,32 +9,32 @@
 
 
         <div>
-            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
-                <label>
-                    <select name="date" class="form-select">
-                        <option name="oldest" value="oldest">Deadline: Oldest</option>
-                        <option name="latest" value="latest">Deadline: Latest</option>
+            <form method="POST" action="studentMatches.php" class="mb-4 d-flex align-items-end flex-wrap">
 
+                <div class="form-group me-3 mb-2">
+                    <label for="match_percentage" class="form-label">Minimum Match %:</label>
+                    <select class="form-select" id="match_percentage" name="match_percentage">
+                        <option value="0" <?php echo ($view->selectedMatchPercentage ?? '') === '0' ? 'selected' : ''; ?>>0% +</option>
+                        <option value="25" <?php echo ($view->selectedMatchPercentage ?? '') === '25' ? 'selected' : ''; ?>>25% +</option>
+                        <option value="50" <?php echo ($view->selectedMatchPercentage ?? '') === '50' ? 'selected' : ''; ?>>50% +</option>
+                        <option value="75" <?php echo ($view->selectedMatchPercentage ?? '') === '75' ? 'selected' : ''; ?>>75% +</option>
+                        <option value="100" <?php echo ($view->selectedMatchPercentage ?? '') === '100' ? 'selected' : ''; ?>>100%</option>
                     </select>
-                </label>
-                <label>
-                    <select class="form-select" name="order_by">
-                        <option name="order_1" id="order_1" value="ASC">ASCENDING</option>
-                        <option name="order_2" id="order_2" value="DESC">DESCENDING</option>
+                </div>
+
+                <div class="form-group me-3 mb-2">
+                    <label for="sort_option" class="form-label">Sort Placements By:</label>
+                    <select class="form-select" id="sort_option" name="sort_option">
+                        <option value="">-- Select an Option --</option>
+                        <option value="deadline_soonest" <?php echo ($view->selectedSort ?? '') === 'deadline_soonest' ? 'selected' : ''; ?>>Deadline: Soonest</option>
+                        <option value="deadline_latest" <?php echo ($view->selectedSort ?? '') === 'deadline_latest' ? 'selected' : ''; ?>>Deadline: Latest</option>
+                        <option value="salary_high" <?php echo ($view->selectedSort ?? '') === 'salary_high' ? 'selected' : ''; ?>>Salary: High to Low</option>
+                        <option value="salary_low" <?php echo ($view->selectedSort ?? '') === 'salary_low' ? 'selected' : ''; ?>>Salary: Low to High</option>
                     </select>
-                </label>
-                <label>
-                    <select class="form-select" name="salary">
-                        <option value="none" disabled selected>SALARY</option>
-                        <option value="20000" name="salary_option_1">+£20000</option>
-                        <option value="30000" name="salary_option_2">+£30000</option>
-                        <option value="40000" name="salary_option_2">+£40000</option>
-                        <option value="50000" name="salary_option_2">+£50000</option>
-                        <option value="60000" name="salary_option_2">+£60000</option>
-                    </select>
-                </label>
-                <button type="submit" name="apply_search">apply</button>
-                <button type="submit" name="cancel">reset filters</button>
+                </div>
+
+                <button type="submit" name="apply_search" class="btn btn-primary me-2 mb-2">Apply Filters</button>
+                <button type="submit" name="cancel" class="btn btn-secondary mb-2">Clear All</button>
             </form>
         </div>
 

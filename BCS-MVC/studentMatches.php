@@ -17,31 +17,25 @@ $studentDataSet = new StudentDataSet();
 $view = new stdClass();
 $view->pageTitle = 'Matched Placements';
 
-// Fetch all posts
-$placementsDataSet = new PlacementsDataSet();
-if (isset($_POST['apply_search'])) {
-    if (!empty($_POST['salary'])) {
-        $salary = $_POST['salary'];
-        $placements = $placementsDataSet->salary_1($salary);
+$placements = [];
+$selectedSort = $_POST['sort_option'] ?? '';
+$selectedMatchPercentage = $_POST['match_percentage'] ?? '50';
 
-
-    }elseif(!empty($_POST['order_by'])) {
-        $order = $_POST['order_by'];
-        $placements = $placementsDataSet->order_by($order);
-    }elseif(!empty($_POST['date'])) {
-        $date = $_POST['date'];
-        $placements = $placementsDataSet->date($date);
-    }
-    else{
-        $placements = $placementsDataSet->fetchAllPosts();
-    }
-}elseif (isset($_POST['cancel'])) {
+if (isset($_POST['cancel'])) {
     $placements = $placementsDataSet->fetchAllPosts();
-}else{
+    $selectedSort = '';
+    $selectedMatchPercentage = '50';
+}
+elseif (isset($_POST['apply_search']) && !empty($selectedSort)) {
+    $placements = $placementsDataSet->fetchPostsWithSort($selectedSort);
+}
+else {
     $placements = $placementsDataSet->fetchAllPosts();
 }
 
-// Calculate matches and add the count to each placement object
+
+// --- 2. Calculate Matches and Match Percentage for all fetched placements ---
+$placementsWithMatches = [];
 foreach ($placements as $placement) {
     $placementId = $placement->getPlacementID();
 
@@ -59,9 +53,26 @@ foreach ($placements as $placement) {
         $percentage = 0;
     }
     $placement->matchPercentage = $percentage;
+    $placementsWithMatches[] = $placement;
+}
+$placements = $placementsWithMatches;
+
+if ($selectedMatchPercentage !== '') {
+    $minimumPercentage = intval($selectedMatchPercentage);
+
+    $filteredPlacements = [];
+    foreach ($placements as $placement) {
+        if ($placement->matchPercentage >= $minimumPercentage) {
+            $filteredPlacements[] = $placement;
+        }
+    }
+    $placements = $filteredPlacements;
 }
 
+
 $view->placements = $placements;
+$view->selectedSort = $selectedSort; // Pass selected sort to view
+$view->selectedMatchPercentage = $selectedMatchPercentage; // Pass selected filter to view
 
 // Render view
 require_once("Views/studentListings.phtml");
