@@ -18,7 +18,28 @@ $view = new stdClass();
 $view->pageTitle = 'Matched Placements';
 
 // Fetch all posts
-$placements = $placementsDataSet->fetchAllPosts();
+$placementsDataSet = new PlacementsDataSet();
+if (isset($_POST['apply_search'])) {
+    if (!empty($_POST['salary'])) {
+        $salary = $_POST['salary'];
+        $placements = $placementsDataSet->salary_1($salary);
+
+
+    }elseif(!empty($_POST['order_by'])) {
+        $order = $_POST['order_by'];
+        $placements = $placementsDataSet->order_by($order);
+    }elseif(!empty($_POST['date'])) {
+        $date = $_POST['date'];
+        $placements = $placementsDataSet->date($date);
+    }
+    else{
+        $placements = $placementsDataSet->fetchAllPosts();
+    }
+}elseif (isset($_POST['cancel'])) {
+    $placements = $placementsDataSet->fetchAllPosts();
+}else{
+    $placements = $placementsDataSet->fetchAllPosts();
+}
 
 // Calculate matches and add the count to each placement object
 foreach ($placements as $placement) {
@@ -34,15 +55,10 @@ foreach ($placements as $placement) {
     // Calculate percentage
     if ($placement->totalRequired > 0) {
         $percentage = round(($placement->matchedCount / $placement->totalRequired) * 100);
-
     } else {
         $percentage = 0;
     }
     $placement->matchPercentage = $percentage;
-
-    if($percentage >= 50) {
-        $placementsDataSet->insertMatches($studentId, $placementId);
-    }
 }
 
 $view->placements = $placements;

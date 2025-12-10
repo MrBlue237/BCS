@@ -234,4 +234,48 @@ class PlacementsDataSet {
         }
     }
 
+    public function salary_1($salary)
+    {
+        $sqlQuery = 'SELECT * FROM placement_opportunity WHERE salary >= :salary ORDER BY salary ASC';
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        $statement->bindParam(":salary", $salary);
+        $statement->execute();
+        $dataSet = [];
+        while ($row = $statement->fetch()) {
+            $dataSet[] = new PlacementsData($row);
+        }
+        return $dataSet;
+    }
+
+    public function order_by($order){
+        $sqlQuery = 'SELECT * FROM placement_opportunity ORDER BY salary '.$order;
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        $statement->execute();
+        $dataSet = [];
+        while ($row = $statement->fetch()) {
+            $dataSet[] = new PlacementsData($row);
+        }
+        return $dataSet;
+    }
+
+    public function date($date){
+        $sqlQuery = 'SELECT * FROM placement_opportunity WHERE deadline DESC';
+
+        if ($date === 'oldest') {
+            $sqlQuery = 'SELECT * FROM placement_opportunity ORDER BY deadline ASC';
+        }elseif ($date === 'latest') {
+            $sqlQuery = 'SELECT * FROM placement_opportunity ORDER BY deadline DESC';
+        }
+
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        $statement->bindParam(":date", $date);
+        $statement->execute();
+        $dataSet = [];
+        while ($row = $statement->fetch()) {
+            $dataSet[] = new PlacementsData($row);
+
+        }
+        return $dataSet;
+    }
+
 }

@@ -8,6 +8,36 @@
             ?>! Your matches are shown below.</p>
 
 
+        <div>
+            <form method="POST" action="<?php echo $_SERVER['PHP_SELF']?>">
+                <label>
+                    <select name="date" class="form-select">
+                        <option name="oldest" value="oldest">Deadline: Oldest</option>
+                        <option name="latest" value="latest">Deadline: Latest</option>
+
+                    </select>
+                </label>
+                <label>
+                    <select class="form-select" name="order_by">
+                        <option name="order_1" id="order_1" value="ASC">ASCENDING</option>
+                        <option name="order_2" id="order_2" value="DESC">DESCENDING</option>
+                    </select>
+                </label>
+                <label>
+                    <select class="form-select" name="salary">
+                        <option value="none" disabled selected>SALARY</option>
+                        <option value="20000" name="salary_option_1">£20000</option>
+                        <option value="30000" name="salary_option_2">£30000</option>
+                        <option value="40000" name="salary_option_2">£40000</option>
+                        <option value="50000" name="salary_option_2">£50000</option>
+                        <option value="60000" name="salary_option_2">+£60000</option>
+                    </select>
+                </label>
+                <button type="submit" name="apply_search">apply</button>
+                <button type="submit" name="cancel">reset filters</button>
+            </form>
+        </div>
+
         <div class="row">
             <?php
             // Use $view->placements from the controller
