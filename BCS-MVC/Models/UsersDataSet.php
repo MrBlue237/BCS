@@ -123,7 +123,7 @@ class UsersDataSet {
 
     public function storeResetToken($email, $hashedToken) {
         $sqlQuery = "UPDATE users 
-                 SET reset_token = :token, reset_expires_at = datetime('now', '+1 hour')
+                 SET reset_token = :token, reset_expires_at = datetime('now', '+15 minutes')
                  WHERE email = :email";
 
         $statement = $this->_dbHandle->prepare($sqlQuery);
