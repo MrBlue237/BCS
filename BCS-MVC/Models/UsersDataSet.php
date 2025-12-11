@@ -112,4 +112,57 @@ class UsersDataSet {
 
         $statement->execute();
     }
+
+    public function getUserByEmail($email) {
+        $sqlQuery = 'SELECT * FROM users WHERE email = :email LIMIT 1;';
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        $statement->bindParam(':email', $email);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function storeResetToken($email, $hashedToken) {
+        $sqlQuery = "UPDATE users 
+                 SET reset_token = :token, reset_expires_at = datetime('now', '+1 hour')
+                 WHERE email = :email";
+
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        return $statement->execute([
+            'email' => $email,
+            'token' => $hashedToken  // Now storing the hashed version
+        ]);
+    }
+
+    public function getUserByToken($hashedToken) {
+        $sqlQuery = "SELECT * FROM users 
+                 WHERE reset_token = :token 
+                 AND reset_expires_at > datetime('now') 
+                 LIMIT 1";
+
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        $statement->bindParam(':token', $hashedToken);
+        $statement->execute();
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            return new UsersData($row);
+        }
+        return false;
+    }
+
+    public function updatePassword($userId, $newPassword) {
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        $sqlQuery = "UPDATE users 
+                 SET password_hash = :password, 
+                     reset_token = NULL, 
+                     reset_expires_at = NULL
+                 WHERE user_id = :id";
+
+        $statement = $this->_dbHandle->prepare($sqlQuery);
+        return $statement->execute([
+            'password' => $hashedPassword,
+            'id' => $userId
+        ]);
+    }
 }
