@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('Models/UsersDataSet.php');
+require_once('config.php');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -40,14 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();
-                $mail->Host       = 'smtp.gmail.com';
+                $mail->Host       = SMTP_HOST;
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'bbbhigh23@gmail.com'; // Your Gmail address
-                $mail->Password   = 'ihanhawiaundlhfr'; // Paste app password here (no spaces)
+                $mail->Username   = SMTP_USERNAME; // Your Gmail address
+                $mail->Password   = SMTP_PASSWORD; // Paste app password here (no spaces)
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->Port       = 587;
+                $mail->Port       = SMTP_PORT;
 
-                $mail->setFrom('bbbhigh23@gmail.com', 'BCS System - Do Not Reply');
+                $mail->setFrom(SMTP_USERNAME, 'BCS System - Do Not Reply');
                 $mail->addAddress($email, $user['name']);
 
                 $mail->isHTML(false);

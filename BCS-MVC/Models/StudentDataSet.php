@@ -155,7 +155,25 @@ class StudentDataSet {
         $stmt->bindParam(1, $placementId);
         $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($students as &$student) {
+            $student['match_percentage'] =
+                $this->getMatchPercentageForStudent($student['user_id'], $placementId);
+        }
+        return $students;
+
+    }
+
+    public function getMatchPercentageForStudent($studentId, $placementId)
+    {
+        $counts = $this->getSkillMatchCounts($studentId, $placementId);
+
+        if ($counts['total_required'] == 0) {
+            return 0;
+        }
+
+        return round(($counts['matched_count'] / $counts['total_required']) * 100);
     }
 
 }

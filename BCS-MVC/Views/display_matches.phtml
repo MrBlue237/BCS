@@ -17,6 +17,7 @@
                 <div class="card-body">
                     <p><strong>Email:</strong> <?php echo htmlspecialchars($student['email']); ?></p>
 
+                    <p>Match: <strong><?= $student['match_percentage']; ?>%</strong></p>
                     <?php if (!empty($student['cv_file_path'])): ?>
                         <a href="<?php echo htmlspecialchars($student['cv_file_path']); ?>" class="btn btn-primary" target="_blank">
                             View CV
