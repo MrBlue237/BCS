@@ -165,4 +165,11 @@ class UsersDataSet {
             'id' => $userId
         ]);
     }
+
+    public function delete_user($user_id) {
+        $sql = 'DELETE FROM users WHERE user_id = :user_id';
+        $statement = $this->_dbHandle->prepare($sql);
+        $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        return $statement->execute();
+    }
 }
